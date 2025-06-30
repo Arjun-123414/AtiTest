@@ -1009,7 +1009,7 @@ def main_app():
     """, unsafe_allow_html=True)
     hide_streamlit_style = """
     <style>
-        /* Hide the GitHub icon */
+        /* Hide the GitHub icon/toolbar in top right */
         .stToolbar {
             display: none !important;
         }
@@ -1024,24 +1024,24 @@ def main_app():
             display: none !important;
         }
 
-        /* Hide the Fork button on GitHub */
-        [data-testid="stToolbar"] {
-            display: none !important;
-        }
-
-        /* Alternative method to hide GitHub button */
-        .styles_viewerBadge__CvC9N {
-            display: none !important;
-        }
-
-        /* Hide the entire toolbar */
-        [data-testid="stDecoration"] {
-            display: none !important;
-        }
-
         /* Hide viewer badge */
         ._profilePreview_1suz2_53 {
             display: none !important;
+        }
+
+        /* Keep the running/progress animations visible */
+        [data-testid="stStatusWidget"] {
+            display: block !important;
+        }
+
+        /* Keep the running indicator visible */
+        .running {
+            display: block !important;
+        }
+
+        /* Ensure spinner/loading animations remain visible */
+        .stSpinner {
+            display: block !important;
         }
     </style>
     """
