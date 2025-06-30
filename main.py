@@ -1007,7 +1007,47 @@ def main_app():
             }
         </style>
     """, unsafe_allow_html=True)
+    hide_streamlit_style = """
+<style>
+    /* Hide the GitHub icon */
+    .stToolbar {
+        display: none !important;
+    }
+    
+    /* Hide the footer with "Made with Streamlit" */
+    footer {
+        display: none !important;
+    }
+    
+    /* Hide the hamburger menu */
+    #MainMenu {
+        display: none !important;
+    }
+    
+    /* Hide the Fork button on GitHub */
+    [data-testid="stToolbar"] {
+        display: none !important;
+    }
+    
+    /* Alternative method to hide GitHub button */
+    .styles_viewerBadge__CvC9N {
+        display: none !important;
+    }
+    
+    /* Hide the entire toolbar */
+    [data-testid="stDecoration"] {
+        display: none !important;
+    }
+    
+    /* Hide viewer badge */
+    ._profilePreview_1suz2_53 {
+        display: none !important;
+    }
+</style>
+"""
 
+# Apply the CSS
+st.markdown(hide_streamlit_style, unsafe_allow_html=True)
     # UI Components
     st.title("❄️ AI Data Assistant ❄️")
     st.caption("Ask me about your business analytics queries")
