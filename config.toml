@@ -1,0 +1,15 @@
+[theme]
+base="light"
+
+[server]
+enableXsrfProtection = false
+
+[browser]
+gatherUsageStats = false
+
+[ui]
+hideTopBar = true
+
+[ui]
+hideTopBar = true
+hideSidebarNav = false
