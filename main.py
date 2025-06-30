@@ -1007,47 +1007,7 @@ def main_app():
             }
         </style>
     """, unsafe_allow_html=True)
-    hide_streamlit_style = """
-    <style>
-        /* Hide the GitHub icon/toolbar in top right */
-        .stToolbar {
-            display: none !important;
-        }
 
-        /* Hide the footer with "Made with Streamlit" */
-        footer {
-            display: none !important;
-        }
-
-        /* Hide the hamburger menu */
-        #MainMenu {
-            display: none !important;
-        }
-
-        /* Hide viewer badge */
-        ._profilePreview_1suz2_53 {
-            display: none !important;
-        }
-
-        /* Keep the running/progress animations visible */
-        [data-testid="stStatusWidget"] {
-            display: block !important;
-        }
-
-        /* Keep the running indicator visible */
-        .running {
-            display: block !important;
-        }
-
-        /* Ensure spinner/loading animations remain visible */
-        .stSpinner {
-            display: block !important;
-        }
-    </style>
-    """
-
-    # Apply the CSS
-    st.markdown(hide_streamlit_style, unsafe_allow_html=True)
     # UI Components
     st.title("❄️ AI Data Assistant ❄️")
     st.caption("Ask me about your business analytics queries")
@@ -1070,6 +1030,8 @@ def main_app():
                 </p>
             </div>
         """, unsafe_allow_html=True)
+
+
 
     def fetch_system_prompt_sections():
         """Fetch all active system prompt sections from Snowflake in order"""
@@ -1106,6 +1068,7 @@ def main_app():
         for col, dtype in columns:
             schema_text += f"  - {col} (Data Type: {dtype})\n"
         schema_text += "\n"
+
 
     combined_template = fetch_system_prompt_sections()
     system_prompt = combined_template.format(
@@ -1316,8 +1279,11 @@ def main_app():
         response_container = st.container()
         final_message_placeholder = st.empty()
 
+
         sql_query = None
         response_text = None
+
+
 
         try:
             # 1. Analyzing phase
@@ -1531,11 +1497,38 @@ def main_app():
             # Clear the final transition message right before showing the answer
             final_message_placeholder.empty()
 
+
             # Show final answer in the response container
             with response_container:
                 with st.chat_message("assistant"):
                     formatted_html = format_llm_response(natural_response)
                     st.markdown(formatted_html, unsafe_allow_html=True)
+
+                    # Add SQL query display with custom styling
+                    if sql_query and not sql_query.startswith("ERROR:"):
+                        st.markdown("""
+                        <style>
+                        .sql-container {
+                            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+                            border-radius: 10px;
+                            padding: 15px;
+                            margin-top: 10px;
+                            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+                        }
+                        .sql-header {
+                            color: #ffffff;
+                            font-weight: 600;
+                            font-size: 14px;
+                            margin-bottom: 10px;
+                            font-family: 'Inter', sans-serif;
+                        }
+                        </style>
+                        """, unsafe_allow_html=True)
+
+                        with st.expander("🔍 View SQL Query", expanded=False):
+                            st.markdown('<div class="sql-container">', unsafe_allow_html=True)
+                            st.code(sql_query, language="sql")
+                            st.markdown('</div>', unsafe_allow_html=True)
 
                     current_message_idx = len(
                         [m for m in st.session_state.chat_history if m["role"] == "assistant"]
@@ -1577,6 +1570,32 @@ def main_app():
             with response_container:
                 with st.chat_message("assistant"):
                     st.markdown(natural_response)
+                    if sql_query and not sql_query.startswith("ERROR:"):
+                        st.markdown("""
+                                <style>
+                                .sql-container {
+                                    background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+                                    border-radius: 10px;
+                                    padding: 15px;
+                                    margin-top: 10px;
+                                    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+                                }
+                                .sql-header {
+                                    color: #ffffff;
+                                    font-weight: 600;
+                                    font-size: 14px;
+                                    margin-bottom: 10px;
+                                    font-family: 'Inter', sans-serif;
+                                }
+                                </style>
+                                """, unsafe_allow_html=True)
+
+                        with st.expander("🔍 View SQL Query", expanded=False):
+                            st.markdown('<div class="sql-container">', unsafe_allow_html=True)
+                            st.code(sql_query, language="sql")
+                            st.markdown('</div>', unsafe_allow_html=True)
+
+
 
 
 # ---------------------------------------------
